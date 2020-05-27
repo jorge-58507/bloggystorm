@@ -145,7 +145,7 @@ class class_post {
     for (const a in post_published) {
       content += `
       <li class="list-group-item px-1 py-0 text-wrap text-truncate w-100 mh_70 bg-secondary text-white cursor_pointer" 
-      title="${post_published[a]['tx_post_title']}" onclick="cls_post.loadpost(${post_published[a]['ai_post_id']})">
+      title="${post_published[a]['tx_post_title']}" onclick="cls_post.loadpost(${post_published[a]['ai_post_id']}); $('#modal_post').modal('hide'); $('.navbar-toggler').click();">
       <small>${cls_general.datetime_converter('ymd', 'mdy', post_published[a]['tx_post_date'])}</small>
       <p class="font-weight-bold">${post_published[a]['tx_post_title']}</p>
       </li>
@@ -161,6 +161,7 @@ class class_post {
       `;
     }
     document.getElementById("container_published").innerHTML = content;
+    document.getElementById("container_modal_published").innerHTML = content;
     // $("#container_published").html(content);
   }
   render_post_notpublished(post_notpublished) {
@@ -168,7 +169,7 @@ class class_post {
     for (const a in post_notpublished) {
       content += `
         <li class="list-group-item px-1 py-0 text-wrap text-truncate w-100 mh_70 bg-secondary text-white cursor_pointer" 
-        title="${post_notpublished[a]['tx_post_title']}" onclick="cls_post.loadpost(${post_notpublished[a]['ai_post_id']})">
+        title="${post_notpublished[a]['tx_post_title']}" onclick="cls_post.loadpost(${post_notpublished[a]['ai_post_id']}); $('#modal_post').modal('hide');">
           <small>${cls_general.datetime_converter('ymd', 'mdy', post_notpublished[a]['tx_post_date'])}</small>
           <p class="font-weight-bold">${post_notpublished[a]['tx_post_title']}</p>
         </li>
@@ -184,6 +185,7 @@ class class_post {
       `;
     }
     document.getElementById("container_notpublished").innerHTML = content;
+    document.getElementById("container_modal_notpublished").innerHTML = content;
   }
   loadpost(id) {
     var url = 'post/'+id;

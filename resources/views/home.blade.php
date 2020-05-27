@@ -5,6 +5,39 @@
     $post_published = $compacted_data["post_published"];
     $post_notpublished = $compacted_data["post_notpublished"];
 @endphp
+	<!-- Modal -->
+	<div class="modal fade" id="modal_post" tabindex="-1" role="dialog" aria-labelledby="modal_post" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Publications</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					{{-- PUBLISHED --}}
+					<a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#published" aria-controls="published">Published <i class="fa fa-caret-down"></i></a>
+					<div id="published" class="collapse">
+						<ul id="container_modal_published" class="nav nav-small flex-column list-group list-group-flush">
+						</ul>
+					</div>
+					{{-- NOT PUBLISHED --}}
+					<a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#notpublished" aria-controls="notpublished">Not Published <i class="fa fa-caret-down"></i></a>
+					<div id="notpublished" class="collapse">
+						<ul id="container_modal_notpublished" class="nav nav-small flex-column list-group list-group-flush">
+						</ul>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal -->
+
 	<div id="side_nav" class="col-md-2 navbar navbar-expand-lg bg-dark navbar-dark d-none d-md-block">
 		<div class=" navbar-collapse flex-column" id="navbar-collapse">
 			<ul class="navbar-nav d-md-block col-sm-12">
@@ -58,7 +91,7 @@
     cls_post.render_post_notpublished(post_notpublished);
     @if ( auth()->user()->checkRole('admin'))
       setInterval(() => {
-        cls_post.get_api()
+        cls_post.get_api();
       }, 1800000000);
     @endif
 

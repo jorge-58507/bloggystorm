@@ -36,49 +36,19 @@
 			<p>Bloggy Storm</p>
 		</div>
 	</div>
+	<div class="col-sm-12 pb-2">
+		<div class="btn-group btn-group-toggle" data-toggle="buttons">
+			<label class="btn btn-secondary active">
+				<input type="radio" name="sort" value="DESC" id="order_desc" checked><i class="fa fa-sort-alpha-down"></i>
+			</label>
+			<label class="btn btn-secondary">
+				<input type="radio" name="sort" value="ASC" id="order_asc"><i class="fa fa-sort-alpha-up"></i>
+			</label>
+		</div>
+		<button type="button" id="btn_sync" class="btn btn-outline-success"><i class="fa fa-sync"></i></button>
+	</div>
 	<div class="accordion" id="accordion_post">
-		<div class="card">
-			<div class="card-header" id="headingOne">
-				<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-					<span class="badge badge-secondary">FECHA</span>
-					<h4 class="mb-3">${post['tx_post_title']}</h4>
-				</button>
-			</div>
-
-			<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-				<div class="card-body">
-					Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-				</div>
-			</div>
-		</div>
-		<div class="card">
-			<div class="card-header" id="headingTwo">
-				<h2 class="mb-0">
-					<button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-						Collapsible Group Item #2
-					</button>
-				</h2>
-			</div>
-			<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-				<div class="card-body">
-					Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-				</div>
-			</div>
-		</div>
-		<div class="card">
-			<div class="card-header" id="headingThree">
-				<h2 class="mb-0">
-					<button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-						Collapsible Group Item #3
-					</button>
-				</h2>
-			</div>
-			<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-				<div class="card-body">
-					Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-				</div>
-			</div>
-		</div>
+		{{-- CONTENIDO --}}
 	</div>
 
 @endsection
@@ -90,8 +60,30 @@
     const cls_general = new general_funct();
 		const cls_post = new class_post(JSON.parse('<?php echo json_encode($post);?>'));
 		class_post.prototype.post_list = cls_post.post_published;
-		cls_post.index(cls_post.post_published);
 
+		// var array_sort = document.getElementsByName('sort');
+		// for(i = 0; i < array_sort.length; i++) {
+		// 	if(array_sort[i].checked){
+		// 		var sort = array_sort[i].value
+		// 	}
+		// }
+		var sort = $('label.active input').val()			
+		cls_post.index(cls_post.post_published,sort);
+
+		$("input[name=sort]").click( ()=>{ 
+			$("#btn_sync").click();
+		});
+		$("#btn_sync").on("click",()=>{
+			var sort = $('label.active input').val()			
+			var url = 'post_sync/'+sort;
+			var method = 'GET';
+			var funcion = function (data_obj) {
+				class_post.prototype.post_list = data_obj['data'];
+				cls_post.index(cls_post.post_list,sort);				
+			}
+			cls_general.async_laravel_request(url, method, funcion)
+
+		});
 
 		// $(document).ready(function(){
 		// 	$("a").on('click', function(event) {

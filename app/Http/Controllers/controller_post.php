@@ -187,4 +187,13 @@ class controller_post extends Controller
 
       return response()->json(['status'=>'success', 'message'=>'Posts Obtained','data'=>['post_published'=>$rs_post_published,'post_notpublished'=>$rs_post_notpublished]]);
     }
+    public function sync($sort){
+      $model_post = new bs_post;
+      $today = date("Y-m-d H:i:s");
+
+      $qry_post = $model_post->where('bs_posts.tx_post_date',"<=",$today)
+      ->select('bs_posts.ai_post_id','bs_posts.tx_post_title','bs_posts.tx_post_content','bs_posts.tx_post_date')->orderby('tx_post_date',$sort)->limit(25);
+      $rs_post = $qry_post->get();
+      return response()->json(['status'=>'success', 'message'=>'Synchronized','data'=>$rs_post]);
+    }
 }

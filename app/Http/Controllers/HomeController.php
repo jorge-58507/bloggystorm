@@ -27,7 +27,7 @@ class HomeController extends Controller
     {
         $model_post = new bs_post;
         $user = $request->user();
-        $today = date('Y-m-d');
+        $today = date('Y-m-d H:i:s');
         $qry_post_published = $model_post->where('bs_posts.post_ai_user_id',$user['id'])->where('bs_posts.tx_post_date',"<=",$today)
         ->select('bs_posts.ai_post_id','bs_posts.tx_post_title','bs_posts.tx_post_content','bs_posts.tx_post_date');
         $rs_post_published = $qry_post_published->get();

@@ -80,6 +80,9 @@
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url('/home') }}">{{ 'My Office' }}</a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#modal_post">{{ 'Post List' }}</a>
+                  </li>
                   <li>
                     <a class="nav-link" id="add_post_menu" href="#" onclick="cls_post.create();"><i class="fa fa-plus-square"></i> Create New Post</a>
                   </li>
